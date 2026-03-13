@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;WTS: The Physics of Conservation&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body { margin: 0; overflow: hidden; background: #0a0a0a; font-family: 'Inter', sans-serif; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>canvas { display: block; }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#ui {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute; top: 20px; left: 20px; color: white; z-index: 100;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(15, 15, 15, 0.95); padding: 25px; border-radius: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 340px; border-left: 4px solid #2ecc71;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#selection-modal {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(15, 15, 15, 0.98); padding: 30px; border-radius: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white; z-index: 200; display: none; max-height: 70vh; overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #444; backdrop-filter: blur(10px);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#alert-log {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute; bottom: 20px; right: 20px; width: 300px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 200px; overflow: hidden; pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex; flex-direction: column-reverse;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.alert-msg {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(231, 76, 60, 0.9); color: white; padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 5px; border-radius: 4px; font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: fadeOut 4s forwards;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fadeOut { 0% {opacity: 1;} 70% {opacity: 1;} 100% {opacity: 0;} }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>button {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block; width: 100%; margin: 10px 0; padding: 14px;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white; border: none; border-radius: 6px;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer; font-weight: bold; transition: 0.2s;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-dev { background: #444; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-heritage { background: #2ecc71; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-remove-dev { background: #e74c3c; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-remove-heritage { background: #f39c12; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.clear { background: transparent; border: 1px solid #444; color: #888; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.select-btn { background: #3498db; margin: 5px 0; font-size: 14px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.stat-box { margin-top: 15px; padding: 10px; background: #222; border-radius: 6px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.label { font-size: 10px; text-transform: uppercase; color: #888; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.value { font-size: 18px; font-weight: bold; color: #2ecc71; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.object-item {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.05);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px; cursor: pointer; transition: 0.2s;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid #3498db;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.object-item:hover { background: rgba(255,255,255,0.15); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.object-item.dev { border-left-color: #666; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.object-item.heritage { border-left-color: #2ecc71; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="ui"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 style="margin:0 0 5px 0; font-size: 18px;"&gt;Wong Tai Sin Lab&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p style="font-size: 11px; color: #888; margin-bottom: 20px;"&gt;Symbolic Physics of Urban Forces&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn-dev" onclick="addDevelopment()"&gt;+ Development Tower&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn-heritage" onclick="addHeritageBox()"&gt;+ Heritage/Greenery&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn-remove-dev" onclick="showDevelopmentSelection()"&gt;🏗️ Select Development to Remove&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn-remove-heritage" onclick="showHeritageSelection()"&gt;🌳 Select Heritage to Remove&lt;/button&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="label"&gt;Social Equity Score&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="equity-val" class="value"&gt;100%&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="label"&gt;Development Pressure&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="pressure-val" class="value"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="clear" onclick="clearAll()"&gt;Reset Urban Landscape&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- SELECTION MODAL --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="selection-modal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h3 id="modal-title" style="margin:0 0 20px 0; color:#2ecc71;"&gt;&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="selection-list"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="select-btn" onclick="closeSelection()" style="margin-top:20px;"&gt;Cancel&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="alert-log"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/DragControls.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/cannon@0.6.2/build/cannon.min.js"&gt;&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 1. SETUP ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const scene = new THREE.Scene();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>camera.position.set(15, 15, 15);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const renderer = new THREE.WebGLRenderer({ antialias: true });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>renderer.setSize(window.innerWidth, window.innerHeight);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>renderer.shadowMap.enabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.body.appendChild(renderer.domElement);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const world = new CANNON.World();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.gravity.set(0, -50, 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.defaultContactMaterial.friction = 1.0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.defaultContactMaterial.restitution = 0.0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.defaultContactMaterial.contactEquationStiffness = 1e8;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.defaultContactMaterial.contactEquationRelaxation = 3;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Materials</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const groundMat = new CANNON.Material();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const devMat = new CANNON.Material();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const heritageMat = new CANNON.Material();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.addContactMaterial(new CANNON.ContactMaterial(groundMat, devMat, {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>friction: 1.0, restitution: 0.0, contactEquationStiffness: 1e8<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.addContactMaterial(new CANNON.ContactMaterial(groundMat, heritageMat, {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>friction: 1.0, restitution: 0.0, contactEquationStiffness: 1e8<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.addContactMaterial(new CANNON.ContactMaterial(devMat, heritageMat, {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>friction: 0.95, restitution: 0.0, contactEquationStiffness: 1e8<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.addContactMaterial(new CANNON.ContactMaterial(heritageMat, heritageMat, {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>friction: 0.95, restitution: 0.0, contactEquationStiffness: 1e8<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>}));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- STATE ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let initialHeritage = null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let developmentObjects = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let heritageObjects = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const physicsObjects = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const draggableMeshes = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let activeBody = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 3. ENVIRONMENT ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>scene.add(new THREE.AmbientLight(0xffffff, 0.5));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const light = new THREE.DirectionalLight(0xffffff, 0.9);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>light.position.set(10, 20, 10);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>light.castShadow = true;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>scene.add(light);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const boardGeo = new THREE.BoxGeometry(25, 0.5, 25);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const boardMesh = new THREE.Mesh(boardGeo, new THREE.MeshStandardMaterial({ color: 0xffffff }));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>boardMesh.receiveShadow = true;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>boardMesh.position.y = -0.25;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>scene.add(boardMesh);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const boardBody = new CANNON.Body({ mass: 0, material: groundMat });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>boardBody.addShape(new CANNON.Box(new CANNON.Vec3(12.5, 0.25, 12.5)));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>boardBody.position.set(0, -0.25, 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>world.add(boardBody);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function createInitialHeritage() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const w=3, h=0.8, d=4;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mesh = new THREE.Mesh(</p>
+<p class="p1"><span class="Apple-converted-space">                </span>new THREE.BoxGeometry(w,h,d),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>new THREE.MeshStandardMaterial({<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>color: 0x27ae60,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>emissive: 0x0a3318,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>emissiveIntensity: 0.15,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>roughness: 0.8</p>
+<p class="p1"><span class="Apple-converted-space">                </span>})</p>
+<p class="p1"><span class="Apple-converted-space">            </span>);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mesh.position.set(0, h/2 + 0.25, 0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mesh.castShadow = true;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mesh.userData.isInitial = true;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const body = new CANNON.Body({ mass: 0 });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.isDev = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.material = heritageMat;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.addShape(new CANNON.Box(new CANNON.Vec3(w/2, h/2, d/2)));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.position.copy(mesh.position);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>scene.add(mesh);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>world.add(body);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>initialHeritage = { mesh, body };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>createInitialHeritage();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- OBJECT FUNCTIONS ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function addDevelopment() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const w=1.8, h=6, d=1.8;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mesh = new THREE.Mesh(</p>
+<p class="p1"><span class="Apple-converted-space">                </span>new THREE.BoxGeometry(w,h,d),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>new THREE.MeshStandardMaterial({ color: 0x666666, metalness: 0.1 })</p>
+<p class="p1"><span class="Apple-converted-space">            </span>);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>spawn(mesh, new CANNON.Box(new CANNON.Vec3(w/2, h/2, d/2)), 15, true);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function addHeritageBox() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const w=1.6, h=1.6, d=1.6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mesh = new THREE.Mesh(</p>
+<p class="p1"><span class="Apple-converted-space">                </span>new THREE.BoxGeometry(w,h,d),<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>new THREE.MeshStandardMaterial({ color: 0x2ecc71, roughness: 0.7 })</p>
+<p class="p1"><span class="Apple-converted-space">            </span>);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>spawn(mesh, new CANNON.Box(new CANNON.Vec3(w/2, h/2, d/2)), 1, false);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function spawn(mesh, shape, mass, isDev) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mesh.position.set((Math.random()-0.5)*10, 12, (Math.random()-0.5)*10);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mesh.castShadow = true;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mesh.userData.id = Date.now() + Math.random();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const body = new CANNON.Body({ mass: mass });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.isDev = isDev;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.material = isDev ? devMat : heritageMat;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.linearDamping = 0.95;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.angularDamping = 0.98;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.userData = { id: mesh.userData.id };</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.addShape(shape);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.position.copy(mesh.position);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>body.addEventListener("collide", (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(body.isDev &amp;&amp; !e.body.isDev) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>triggerAlert("⚠️ Development pressure on heritage!");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>scene.add(mesh);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>world.add(body);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>physicsObjects.push({ mesh, body });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>draggableMeshes.push(mesh);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(isDev) developmentObjects.push({ mesh, body });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>else heritageObjects.push({ mesh, body });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- SELECTIVE REMOVAL ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showDevelopmentSelection() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(developmentObjects.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>triggerAlert("No development to remove");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showSelection('development', 'Select Development Tower to Remove');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showHeritageSelection() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(heritageObjects.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>triggerAlert("No added heritage to remove (central green space is protected)");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showSelection('heritage', 'Select Heritage/Greenery to Remove');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showSelection(type, title) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const modal = document.getElementById('selection-modal');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const list = document.getElementById('selection-list');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const modalTitle = document.getElementById('modal-title');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>modalTitle.textContent = title;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>list.innerHTML = '';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const objects = type === 'development' ? developmentObjects : heritageObjects;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>objects.forEach((obj, index) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const div = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>div.className = `object-item ${type}`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>div.innerHTML = `Object ${index + 1}&lt;br&gt;&lt;small&gt;ID: ${obj.body.userData.id.toFixed(0)} | Pos: (${obj.mesh.position.x.toFixed(1)}, ${obj.mesh.position.z.toFixed(1)})&lt;/small&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>div.onclick = () =&gt; removeSpecificObject(obj, type);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>list.appendChild(div);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>modal.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function removeSpecificObject(obj, type) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>removeObject(obj);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>closeSelection();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>triggerAlert(`${type === 'development' ? '🏗️' : '🌳'} Removed selected ${type}`);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function closeSelection() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('selection-modal').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function removeObject(obj) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const index = physicsObjects.findIndex(o =&gt; o.mesh === obj.mesh);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(index &gt; -1) physicsObjects.splice(index, 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const dragIndex = draggableMeshes.indexOf(obj.mesh);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(dragIndex &gt; -1) draggableMeshes.splice(dragIndex, 1);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const devIndex = developmentObjects.indexOf(obj);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(devIndex &gt; -1) developmentObjects.splice(devIndex, 1);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const herIndex = heritageObjects.indexOf(obj);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(herIndex &gt; -1) heritageObjects.splice(herIndex, 1);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>scene.remove(obj.mesh);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>world.remove(obj.body);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function triggerAlert(text) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const log = document.getElementById('alert-log');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const el = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>el.className = 'alert-msg';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>el.innerText = text;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>log.appendChild(el);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; el.remove(), 4000);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- CONTROLS ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const orbit = new THREE.OrbitControls(camera, renderer.domElement);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>orbit.mouseButtons = { RIGHT: THREE.MOUSE.ROTATE };</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const drag = new THREE.DragControls(draggableMeshes, camera, renderer.domElement);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>drag.addEventListener('dragstart', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>orbit.enabled = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>activeBody = physicsObjects.find(o =&gt; o.mesh === e.object)?.body;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(activeBody) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeBody.mass = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeBody.updateMassProperties();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>drag.addEventListener('dragend', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>orbit.enabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(activeBody) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeBody.mass = activeBody.isDev ? 15 : 1;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeBody.updateMassProperties();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeBody.velocity.set(0,0,0);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeBody.angularVelocity.set(0,0,0);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeBody = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>drag.addEventListener('drag', (e) =&gt; {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(activeBody) activeBody.position.copy(e.object.position);<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Close modal on click outside</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('selection-modal').onclick = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(e.target.id === 'selection-modal') closeSelection();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function clearAll() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>physicsObjects.forEach(o =&gt; { scene.remove(o.mesh); world.remove(o.body); });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>developmentObjects = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>heritageObjects = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>physicsObjects.length = 0;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>draggableMeshes.length = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(initialHeritage) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>scene.remove(initialHeritage.mesh);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>world.remove(initialHeritage.body);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>createInitialHeritage();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>triggerAlert("🌳 Reset with central heritage/green space");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- LOOP ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function animate() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>requestAnimationFrame(animate);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>world.step(1/60);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>physicsObjects.forEach(obj =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(activeBody !== obj.body) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>obj.mesh.position.copy(obj.body.position);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>obj.mesh.quaternion.copy(obj.body.quaternion);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const devs = developmentObjects.length;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const her = heritageObjects.length + (initialHeritage ? 1 : 0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const equity = her === 0 ? 0 : Math.round((her / (devs + her)) * 100);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const pressure = Math.min(devs * 3, 30);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('equity-val').innerText = equity + "%";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('pressure-val').innerText = pressure;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderer.render(scene, camera);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>animate();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
