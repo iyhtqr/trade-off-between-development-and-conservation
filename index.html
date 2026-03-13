@@ -9,8 +9,8 @@
             --earth-bg: 240, 212, 181;
             --earth-muted: 184, 216, 200;
             --earth-light: 212, 228, 200;
-            --warm-accent: 162, 108, 13;      /* Less neon: darker, muted orange */
-            --warm-muted: 184, 142, 52;       /* Less neon: earthy brown-orange */
+            --warm-accent: 162, 108, 13;
+            --warm-muted: 184, 142, 52;
             --text-dark: 26, 60, 52;
             --text-muted: 127, 140, 141;
             --bg-opacity: 0.92;
@@ -43,11 +43,32 @@
             border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             backdrop-filter: blur(12px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* SCROLLABLE PANEL - NEW */
+            max-height: 85vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        /* Custom scrollbar for Chrome/Safari */
+        #ui::-webkit-scrollbar {
+            width: 6px;
+        }
+        #ui::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+        #ui::-webkit-scrollbar-thumb {
+            background: rgba(var(--warm-accent), 0.6);
+            border-radius: 3px;
+        }
+        #ui::-webkit-scrollbar-thumb:hover {
+            background: rgba(var(--warm-accent), 0.8);
         }
 
         #ui.collapsed {
             width: 80px; 
-            padding: 28px 20px;  /* Fixed: consistent padding */
+            padding: 28px 20px;
         }
 
         #ui.collapsed .panel-content {
@@ -61,7 +82,7 @@
             width: 36px; height: 36px; border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.25s ease;
-            z-index: 101;  /* Fixed: ensure toggle stays on top */
+            z-index: 101;
         }
 
         .collapse-toggle:hover {
@@ -253,7 +274,7 @@
     <script src="https://unpkg.com/cannon@0.6.2/build/cannon.min.js"></script>
 
     <script>
-        // FIXED COLLAPSE FUNCTIONALITY
+        // COLLAPSE FUNCTIONALITY
         function toggleCollapse() {
             const ui = document.getElementById('ui');
             const toggle = document.getElementById('collapse-toggle');
@@ -269,7 +290,7 @@
             }
         }
 
-        // Physics setup (unchanged)
+        // Physics setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(15, 15, 15);
@@ -333,9 +354,6 @@
         boardBody.position.set(0, GROUND_Y, 0);
         world.add(boardBody);
 
-        // Rest of the JavaScript remains exactly the same...
-        // [All other functions unchanged: createInitialHeritage, addDevelopment, etc.]
-        
         function createInitialHeritage() {
             const w=3, h=0.8, d=4;
             const mesh = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshStandardMaterial({ 
@@ -579,7 +597,6 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Event listener for collapse toggle (fixed)
         document.getElementById('collapse-toggle').addEventListener('click', toggleCollapse);
     </script>
 </body>
